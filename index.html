@@ -73,6 +73,7 @@
     #nc{border-left:.5px solid var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.875rem 1.25rem .625rem;gap:0;}
     #ds{font-family:Georgia,serif;font-size:38px;font-weight:700;line-height:1;transition:color .2s;color:var(--t3);}
     #dz{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin:3px 0 4px;}
+    #nf{font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);text-align:center;margin-top:4px;line-height:1.4;}
     #svg{width:200px;display:block;}
 
     /* Mobile */
@@ -120,11 +121,16 @@
     .leg span{display:flex;align-items:center;gap:5px;font-size:10px;font-family:'DM Mono',monospace;color:var(--t3);}
     .ll{display:inline-block;width:14px;height:1.5px;}
 
-    /* Slider */
-    .ir{border-top:.5px solid var(--bd);padding-top:1.25rem;display:flex;align-items:center;gap:14px;}
-    .il{font-size:11px;font-family:'DM Mono',monospace;color:var(--t3);white-space:nowrap;}
-    .iv{font-family:'DM Mono',monospace;font-size:13px;color:var(--t1);min-width:62px;text-align:right;}
-    input[type=range]{flex:1;accent-color:var(--t1);}
+    /* Settings row */
+    .settings-row{border-top:.5px solid var(--bd);padding-top:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;}
+    .setting-item{flex:1;min-width:160px;}
+    .setting-item .lbl{margin-bottom:6px;}
+    .setting-edit{display:flex;align-items:center;gap:5px;}
+    .setting-edit span{font-family:'DM Mono',monospace;font-size:13px;color:var(--t2);}
+    .setting-edit input[type=number]{font-family:'DM Mono',monospace;font-size:13px;color:var(--t1);background:var(--bg);border:.5px solid var(--bd);border-radius:4px;padding:4px 8px;width:100px;}
+    .setting-edit .btn-save{font-family:'DM Mono',monospace;font-size:10px;background:var(--bg2);color:var(--t2);border:.5px solid var(--bd);border-radius:4px;padding:4px 8px;cursor:pointer;}
+    .setting-edit .btn-save:hover{color:var(--t1);}
+    .setting-saved{font-family:'DM Mono',monospace;font-size:10px;color:#1D9E75;margin-left:4px;opacity:0;transition:opacity .3s;}
 
     /* Monthly history */
     .month-card{background:var(--bg2);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;}
@@ -180,6 +186,7 @@
           <circle cx="0" cy="0" r="13" fill="#1a1a18"/>
         </g>
       </svg>
+      <div id="nf">—</div>
     </div>
   </div>
 
@@ -226,8 +233,8 @@
       <div class="lbl">spend over time</div>
       <div class="leg">
         <span><span class="ll" style="background:#378ADD"></span>actual</span>
-        <span><span class="ll" id="le"></span>trendline</span>
         <span><span class="ll" style="background:#1D9E75"></span>income</span>
+        <span><span class="ll" style="background:#D4A33A"></span>budget</span>
       </div>
     </div>
     <div style="position:relative;width:100%;height:220px">
@@ -244,11 +251,24 @@
     <div id="histList"><div class="empty">No history yet — previous months are archived automatically.</div></div>
   </div>
 
-  <!-- Income slider -->
-  <div class="ir">
-    <span class="il">monthly income</span>
-    <input type="range" id="sl" min="500" max="30000" step="100" value="3000">
-    <span class="iv" id="sv">$3,000</span>
+  <!-- Income + Budget settings -->
+  <div class="settings-row">
+    <div class="setting-item">
+      <div class="lbl">monthly income</div>
+      <div class="setting-edit">
+        <span>$</span>
+        <input type="number" id="incomeInput" min="0" step="1" value="3000">
+        <span class="setting-saved" id="incomeSaved">saved</span>
+      </div>
+    </div>
+    <div class="setting-item">
+      <div class="lbl">monthly budget</div>
+      <div class="setting-edit">
+        <span>$</span>
+        <input type="number" id="budgetInput" min="0" step="1" value="3000">
+        <span class="setting-saved" id="budgetSaved">saved</span>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -273,7 +293,7 @@ const firebaseConfig = {
 const CATS=['General','Grocery','Restaurant','Coffee','Transportation','Entertainment'];
 const CAT_NEXT={General:'Grocery',Grocery:'Restaurant',Restaurant:'Coffee',Coffee:'Transportation',Transportation:'Entertainment',Entertainment:'General'};
 
-let income=3000,transactions=[],addType='v',catFilter='all',ch=null,incT=null;
+let income=3000,budget=3000,transactions=[],addType='v',catFilter='all',ch=null,incT=null,incSaveT=null,bdgSaveT=null;
 
 const configured=firebaseConfig.apiKey!=="YOUR_API_KEY";
 
@@ -287,7 +307,8 @@ if(!configured){
   async function init(){
     try{
       const s=await getDoc(doc(db,'settings','config'));
-      if(s.exists()&&s.data().income){income=s.data().income;document.getElementById('sl').value=income;document.getElementById('sv').textContent='$'+income.toLocaleString();}
+      if(s.exists()&&s.data().income){income=s.data().income;document.getElementById('incomeInput').value=income;}
+      if(s.exists()&&s.data().budget){budget=s.data().budget;document.getElementById('budgetInput').value=budget;}
     }catch(e){}
 
     // Check if month rollover needed
@@ -397,12 +418,32 @@ if(!configured){
     if(t){const next=CAT_NEXT[t.category||'General'];await updateDoc(doc(db,'transactions',id),{category:next});}
   };
 
-  document.getElementById('sl').addEventListener('input',e=>{
-    income=parseInt(e.target.value);
-    document.getElementById('sv').textContent='$'+income.toLocaleString();
-    tick();if(ch)updateCh();
-    clearTimeout(incT);
-    incT=setTimeout(async()=>{await setDoc(doc(db,'settings','config'),{income},{merge:true});},800);
+  function flashSaved(id){
+    const el=document.getElementById(id);
+    el.style.opacity='1';
+    setTimeout(()=>{el.style.opacity='0';},1500);
+  }
+
+  document.getElementById('incomeInput').addEventListener('input',e=>{
+    const v=parseInt(e.target.value);
+    if(isNaN(v)||v<=0)return;
+    income=v;tick();if(ch)updateCh();
+    clearTimeout(incSaveT);
+    incSaveT=setTimeout(async()=>{
+      await setDoc(doc(db,'settings','config'),{income},{merge:true});
+      flashSaved('incomeSaved');
+    },800);
+  });
+
+  document.getElementById('budgetInput').addEventListener('input',e=>{
+    const v=parseInt(e.target.value);
+    if(isNaN(v)||v<=0)return;
+    budget=v;tick();if(ch)updateCh();
+    clearTimeout(bdgSaveT);
+    bdgSaveT=setTimeout(async()=>{
+      await setDoc(doc(db,'settings','config'),{budget},{merge:true});
+      flashSaved('budgetSaved');
+    },800);
   });
 
   // Save daily health score every hour
@@ -465,7 +506,10 @@ function proj(){
   return{fix,vari,rate,pm:fix+rate*dim,dim,today,yr,mo};
 }
 
-function score(pm){return Math.max(0,Math.min(100,100*(1.2*income-pm)/(0.4*income)));}
+function score(pm){
+  if(pm<=income){return Math.max(0,Math.min(100,50+50*(income-pm)/Math.max(income-0.8*budget,1)));}
+  return Math.max(0,Math.min(100,50*(1.2*income-pm)/(0.2*income)));
+}
 
 function lerpRgb(s){
   const t=Math.max(0,Math.min(1,s/100));
@@ -496,30 +540,37 @@ function mFrac(){
 
 /* ── Tick ── */
 function tick(){
-  const frac=mFrac(),{fix,rate,pm,dim}=proj(),sc=score(pm),col=lerpStr(sc);
+  const frac=mFrac(),{fix,vari,rate,pm,dim,today}=proj(),sc=score(pm),col=lerpStr(sc);
   const earned=frac*income;
   const ew=Math.floor(earned),ef=Math.floor((earned-ew)*100).toString().padStart(2,'0');
   document.getElementById('ew').textContent=ew.toLocaleString();
   document.getElementById('ef').textContent=ef;
   document.getElementById('ib').style.width=(frac*100).toFixed(1)+'%';
   document.getElementById('mp').textContent=(frac*100).toFixed(1)+'%';
-  const spend=fix+rate*dim*frac;
-  const sw=Math.floor(spend),sf=Math.floor((spend-sw)*100).toString().padStart(2,'0');
+  const sw=Math.floor(pm),sf=Math.floor((pm-sw)*100).toString().padStart(2,'0');
   document.getElementById('sw').textContent=sw.toLocaleString();
   document.getElementById('sf').textContent=sf;
-  const ep=Math.round(pm/income*100);
+  const ep=Math.round(pm/budget*100);
   document.getElementById('eb').style.width=Math.min(ep,100)+'%';
   document.getElementById('eb').style.background=col;
-  document.getElementById('ep').textContent=ep+'% of income';
+  document.getElementById('ep').textContent=ep+'% of budget';
   document.getElementById('ndl').setAttribute('d',ndlPath(sc));
   document.getElementById('ds').textContent=Math.round(sc);
   document.getElementById('ds').style.color=col;
   document.getElementById('dz').textContent=zone(sc);
+  const tmrRate=vari/Math.max(today,1);
+  const tmrPm=fix+tmrRate*dim;
+  const tmrSc=Math.round(score(tmrPm));
+  const delta=tmrSc-Math.round(sc);
+  const tmr=new Date();tmr.setDate(tmr.getDate()+1);
+  const tmrLabel=tmr.toLocaleString('en',{month:'short',day:'numeric'});
+  const sign=delta>=0?'+':'';
+  document.getElementById('nf').textContent=`${sign}${delta} if you don't spend tomorrow, ${tmrLabel}`;
 }
 
 /* ── Chart ── */
 function chartData(){
-  const{fix,rate,dim,today,yr,mo}=proj();
+  const{fix,dim,today,yr,mo}=proj();
   const labels=Array.from({length:dim},(_,i)=>i+1);
   const sv=[...transactions.filter(t=>t.type==='v')].sort((a,b)=>a.date.localeCompare(b.date));
   let vr=0;
@@ -529,30 +580,30 @@ function chartData(){
     sv.filter(t=>t.date===ds).forEach(t=>{vr+=t.amount;});
     return Math.round(fix+vr);
   });
-  return{labels,cum,proj:labels.map(d=>Math.round(fix+rate*(d-1))),inc:labels.map(()=>income)};
+  const start=cum[0]??0;
+  const span=Math.max(dim-1,1);
+  const incTrend=labels.map((_,i)=>Math.round(start+(income-start)*i/span));
+  const budgetTrend=labels.map((_,i)=>Math.round(start+(budget-start)*i/span));
+  return{labels,cum,incTrend,budgetTrend};
 }
 
 function updateCh(){
-  const{pm}=proj(),col=lerpStr(score(pm));
-  const{labels,cum,proj:pd,inc}=chartData();
+  const{labels,cum,incTrend,budgetTrend}=chartData();
   ch.data.labels=labels;
   ch.data.datasets[0].data=cum;
-  ch.data.datasets[1].data=pd;ch.data.datasets[1].borderColor=col;
-  ch.data.datasets[2].data=inc;
-  const le=document.getElementById('le');if(le)le.style.background=col;
+  ch.data.datasets[1].data=incTrend;
+  ch.data.datasets[2].data=budgetTrend;
   ch.update('none');
 }
 
 function initChart(){
-  const{pm}=proj(),ic=lerpStr(score(pm));
-  const le=document.getElementById('le');if(le)le.style.background=ic;
-  const{labels,cum,proj:pd,inc}=chartData();
+  const{labels,cum,incTrend,budgetTrend}=chartData();
   ch=new Chart(document.getElementById('chart'),{
     type:'line',
     data:{labels,datasets:[
       {label:'Actual Spend',data:cum,borderColor:'#378ADD',borderWidth:1.5,tension:.15,spanGaps:false,pointRadius:0,pointHoverRadius:4},
-      {label:'Trendline',data:pd,borderColor:ic,borderWidth:1,tension:0,borderDash:[5,3],pointRadius:0,pointHoverRadius:4},
-      {label:'Monthly Income',data:inc,borderColor:'#1D9E75',borderWidth:1,tension:0,borderDash:[8,4],pointRadius:0,pointHoverRadius:4}
+      {label:'Income',data:incTrend,borderColor:'#1D9E75',borderWidth:1.5,tension:0,borderDash:[6,4],pointRadius:0,pointHoverRadius:4},
+      {label:'Budget',data:budgetTrend,borderColor:'#D4A33A',borderWidth:1.5,tension:0,pointRadius:0,pointHoverRadius:4}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>c.parsed.y===null?null:c.dataset.label+': $'+c.parsed.y.toLocaleString()}}},
@@ -565,7 +616,7 @@ function initChart(){
 }
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&document.activeElement!==document.getElementById('sl'))
+  if(e.key==='Enter'&&document.activeElement!==document.getElementById('incomeInput')&&document.activeElement!==document.getElementById('budgetInput'))
     window.addTx&&window.addTx();
 });
 
