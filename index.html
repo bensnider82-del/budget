@@ -37,10 +37,12 @@
   <style>
     :root {
       --t1:#1a1a18;--t2:#5f5e5a;--t3:#9b9a96;
-      --bg:#ffffff;--bg2:#f7f6f3;--bd:#e8e7e3;--r:8px;
+      --bg:#f5f0e8;--bg2:rgba(255,255,255,.55);--bd:rgba(255,255,255,.4);--r:16px;
+      --glass:rgba(255,255,255,.45);--glass-border:rgba(255,255,255,.6);--glass-shadow:0 2px 16px rgba(0,0,0,.04);--blur:16px;
     }
     @media(prefers-color-scheme:dark){
-      :root{--t1:#f0ede8;--t2:#a8a6a0;--t3:#6b6965;--bg:#1a1917;--bg2:#242320;--bd:#2e2d29;}
+      :root{--t1:#f0ede8;--t2:#a8a6a0;--t3:#6b6965;--bg:#1c1b18;--bg2:rgba(40,39,35,.6);--bd:rgba(255,255,255,.06);
+        --glass:rgba(40,39,35,.5);--glass-border:rgba(255,255,255,.08);--glass-shadow:0 2px 16px rgba(0,0,0,.2);--blur:16px;}
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;}
@@ -54,13 +56,13 @@
 
     /* Labels + sections */
     .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);font-family:'DM Mono',monospace;}
-    .sec{border-top:.5px solid var(--bd);padding-top:1.25rem;margin-bottom:1.5rem;}
+    .sec{background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--glass-border);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;box-shadow:var(--glass-shadow);}
     .sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 
     /* Top row: clocks + needle */
-    .top{display:grid;grid-template-columns:1fr 1fr auto;border:.5px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;align-items:stretch;}
+    .top{display:grid;grid-template-columns:1fr 1fr auto;background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--glass-border);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;align-items:stretch;box-shadow:var(--glass-shadow);}
     .ch{padding:1.25rem 1.25rem 1rem;}
-    .ch+.ch{border-left:.5px solid var(--bd);}
+    .ch+.ch{border-left:1px solid var(--glass-border);}
     .cn{font-family:'DM Mono',monospace;font-weight:300;font-size:34px;letter-spacing:-.02em;color:var(--t1);line-height:1;margin:6px 0;}
     .cn .s{font-size:18px;color:var(--t3);}
     .cn .f{font-size:18px;color:var(--t2);}
@@ -70,7 +72,7 @@
     .bl{font-size:10px;font-family:'DM Mono',monospace;color:var(--t3);white-space:nowrap;}
 
     /* Needle column */
-    #nc{border-left:.5px solid var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.875rem 1.25rem .625rem;gap:0;}
+    #nc{border-left:1px solid var(--glass-border);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.875rem 1.25rem .625rem;gap:0;}
     #ds{font-family:Georgia,serif;font-size:38px;font-weight:700;line-height:1;transition:color .2s;color:var(--t3);}
     #dz{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin:3px 0 4px;}
     #nf{font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);text-align:center;margin-top:4px;line-height:1.4;}
@@ -79,7 +81,7 @@
     /* Mobile */
     @media(max-width:520px){
       .top{grid-template-columns:1fr 1fr;}
-      #nc{grid-column:1/-1;border-left:none;border-top:.5px solid var(--bd);flex-direction:row;justify-content:center;gap:1.5rem;padding:.75rem 1.25rem;}
+      #nc{grid-column:1/-1;border-left:none;border-top:1px solid var(--glass-border);flex-direction:row;justify-content:center;gap:1.5rem;padding:.75rem 1.25rem;}
       #ds{font-size:44px;} #svg{width:160px;}
     }
     @media(max-width:480px){.cn{font-size:26px;} .cn .s,.cn .f{font-size:14px;}}
@@ -122,7 +124,7 @@
     .ll{display:inline-block;width:14px;height:1.5px;}
 
     /* Settings row */
-    .settings-row{border-top:.5px solid var(--bd);padding-top:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;}
+    .settings-row{background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--glass-border);border-radius:var(--r);padding:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;box-shadow:var(--glass-shadow);}
     .setting-item{flex:1;min-width:160px;}
     .setting-item .lbl{margin-bottom:6px;}
     .setting-edit{display:flex;align-items:center;gap:5px;}
@@ -133,7 +135,7 @@
     .setting-saved{font-family:'DM Mono',monospace;font-size:10px;color:#1D9E75;margin-left:4px;opacity:0;transition:opacity .3s;}
 
     /* Monthly history */
-    .month-card{background:var(--bg2);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;}
+    .month-card{background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--glass-border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;box-shadow:var(--glass-shadow);}
     .month-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
     .month-title{font-family:'DM Mono',monospace;font-size:13px;font-weight:400;color:var(--t1);}
     .month-score{font-family:'DM Mono',monospace;font-size:13px;}
@@ -144,9 +146,67 @@
     .cat-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
     .cat-chip{font-family:'DM Mono',monospace;font-size:10px;padding:3px 10px;border-radius:20px;cursor:pointer;border:.5px solid var(--bd);background:var(--bg2);color:var(--t2);}
     .cat-chip.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+
+    /* Lava lamp */
+    #lava-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;opacity:0;transition:opacity .6s;}
+    #lava-bg.on{opacity:1;}
+    .lava-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.18;animation:float linear infinite;}
+    @keyframes float{
+      0%{transform:translate(0,0) scale(1);}
+      25%{transform:translate(30px,-60px) scale(1.1);}
+      50%{transform:translate(-20px,-120px) scale(.95);}
+      75%{transform:translate(40px,-60px) scale(1.05);}
+      100%{transform:translate(0,0) scale(1);}
+    }
+    .page{position:relative;z-index:1;}
+
+    /* Nav tabs */
+    .nav{display:flex;gap:0;margin-bottom:1.5rem;background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--glass-border);border-radius:var(--r);overflow:hidden;box-shadow:var(--glass-shadow);}
+    .nav-tab{flex:1;text-align:center;padding:10px 0;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);cursor:pointer;transition:all .2s;border:none;background:none;}
+    .nav-tab:hover{color:var(--t1);}
+    .nav-tab.active{color:var(--t1);background:var(--bg2);font-weight:500;}
+    .nav-tab+.nav-tab{border-left:1px solid var(--glass-border);}
+    .view{display:none;} .view.active{display:block;}
+
+    /* Settings sections */
+    .sgroup{margin-bottom:1.5rem;}
+    .sgroup-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+    .cat-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+    .cat-row{display:flex;align-items:center;gap:8px;}
+    .cat-row input{font-family:'DM Mono',monospace;font-size:12px;color:var(--t1);background:transparent;border:none;border-bottom:1px solid var(--bd);padding:4px 0;flex:1;outline:none;}
+    .cat-row input:focus{border-bottom-color:var(--t1);}
+    .cat-row .cat-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;padding:0 4px;}
+    .cat-row .cat-del:hover{color:#E24B4A;}
+    .cat-add-btn{font-family:'DM Mono',monospace;font-size:11px;background:none;border:1px dashed var(--bd);border-radius:8px;padding:6px 14px;color:var(--t3);cursor:pointer;}
+    .cat-add-btn:hover{color:var(--t1);border-color:var(--t1);}
+    .color-grid{display:flex;gap:10px;flex-wrap:wrap;}
+    .color-swatch{width:36px;height:36px;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:border-color .2s,transform .15s;}
+    .color-swatch:hover{transform:scale(1.1);}
+    .color-swatch.active{border-color:var(--t1);transform:scale(1.1);}
+
+    /* Decide / Roulette */
+    .decide-wrap{display:flex;flex-direction:column;align-items:center;gap:1.25rem;}
+    .decide-form{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;}
+    .decide-form input{font-family:'DM Mono',monospace;font-size:13px;background:transparent;color:var(--t1);border:none;border-bottom:1px solid var(--bd);padding:6px 2px;outline:none;text-align:center;}
+    .decide-form input:focus{border-bottom-color:var(--t1);}
+    .decide-form input[type=number]{width:90px;}
+    .decide-form input[type=text]{width:160px;}
+    #rouletteCanvas{max-width:320px;width:100%;aspect-ratio:1;}
+    .decide-stats{font-family:'DM Mono',monospace;font-size:11px;color:var(--t3);text-align:center;line-height:1.8;}
+    .decide-result{font-family:'DM Mono',monospace;font-size:18px;font-weight:600;text-align:center;min-height:28px;transition:color .3s;}
+    .spin-btn{font-family:'DM Mono',monospace;font-size:13px;padding:10px 32px;border-radius:var(--r);border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));color:var(--t1);cursor:pointer;transition:all .2s;box-shadow:var(--glass-shadow);}
+    .spin-btn:hover{background:var(--bg2);}
+    .spin-btn:disabled{opacity:.4;cursor:default;}
   </style>
 </head>
 <body>
+<div id="lava-bg" class="on">
+  <div class="lava-blob" style="width:300px;height:300px;top:10%;left:15%;animation-duration:18s;"></div>
+  <div class="lava-blob" style="width:250px;height:250px;top:40%;left:60%;animation-duration:22s;animation-delay:-5s;"></div>
+  <div class="lava-blob" style="width:350px;height:350px;top:65%;left:25%;animation-duration:25s;animation-delay:-10s;"></div>
+  <div class="lava-blob" style="width:200px;height:200px;top:20%;left:75%;animation-duration:20s;animation-delay:-3s;"></div>
+  <div class="lava-blob" style="width:280px;height:280px;top:80%;left:55%;animation-duration:23s;animation-delay:-8s;"></div>
+</div>
 <div class="page">
 
   <div class="hdr">
@@ -154,9 +214,17 @@
     <div class="dot" id="dot"></div>
   </div>
 
+  <div class="nav">
+    <button class="nav-tab active" data-view="home" onclick="switchView('home')">Home</button>
+    <button class="nav-tab" data-view="decide" onclick="switchView('decide')">Decide</button>
+    <button class="nav-tab" data-view="settings" onclick="switchView('settings')">Settings</button>
+  </div>
+
   <div id="cw" class="cwarn" style="display:none">
     ⚠ Firebase not configured. Open this file, find "PASTE YOUR FIREBASE CONFIG HERE", and fill in your values.
   </div>
+
+  <div id="view-home" class="view active">
 
   <!-- Top row: clocks + NYT needle -->
   <div class="top">
@@ -166,7 +234,7 @@
       <div class="bw"><div class="bb"><div class="bf" id="ib" style="width:0%;background:var(--t1)"></div></div><span class="bl" id="mp">0.0%</span></div>
     </div>
     <div class="ch">
-      <div class="lbl">projected monthly spend</div>
+      <div class="lbl">projected spend</div>
       <div class="cn"><span class="s">$</span><span id="sw">0</span><span class="f">.<span id="sf">00</span></span></div>
       <div class="bw"><div class="bb"><div class="bf" id="eb" style="width:0%"></div></div><span class="bl" id="ep">—</span></div>
     </div>
@@ -193,7 +261,7 @@
   <!-- Logged expenses -->
   <div class="sec">
     <div class="sh">
-      <div class="lbl">logged expenses</div>
+      <div class="lbl">recent expenses</div>
       <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t2)">total: <span id="tt">$0.00</span></div>
     </div>
 
@@ -225,6 +293,7 @@
       <button onclick="addTx()">add</button>
     </div>
     <div id="txList"><div class="empty">Loading…</div></div>
+    <div id="showAllWrap" style="text-align:center;margin-top:6px;display:none"><button id="showAllBtn" onclick="toggleShowAll()" style="background:none;border:none;color:var(--t2);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;opacity:.7">show all ▾</button></div>
   </div>
 
   <!-- Spend over time -->
@@ -251,25 +320,74 @@
     <div id="histList"><div class="empty">No history yet — previous months are archived automatically.</div></div>
   </div>
 
-  <!-- Income + Budget settings -->
-  <div class="settings-row">
-    <div class="setting-item">
-      <div class="lbl">monthly income</div>
-      <div class="setting-edit">
-        <span>$</span>
-        <input type="number" id="incomeInput" min="0" step="1" value="3000">
-        <span class="setting-saved" id="incomeSaved">saved</span>
+  </div><!-- /view-home -->
+
+  <div id="view-decide" class="view">
+    <div class="sec">
+      <div class="decide-wrap">
+        <div class="lbl">should you buy it?</div>
+        <div class="decide-form">
+          <span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--t3)">$</span>
+          <input type="number" id="decideAmt" placeholder="amount" min="0" step="0.01" inputmode="decimal">
+          <input type="text" id="decideDesc" placeholder="what is it?" autocomplete="off">
+        </div>
+        <div class="decide-stats" id="decideStats"></div>
+        <canvas id="rouletteCanvas" width="320" height="320"></canvas>
+        <div class="decide-result" id="decideResult"></div>
+        <button class="spin-btn" id="spinBtn" onclick="spinRoulette()">spin</button>
       </div>
     </div>
-    <div class="setting-item">
-      <div class="lbl">monthly budget</div>
-      <div class="setting-edit">
-        <span>$</span>
-        <input type="number" id="budgetInput" min="0" step="1" value="3000">
-        <span class="setting-saved" id="budgetSaved">saved</span>
+  </div><!-- /view-decide -->
+
+  <div id="view-settings" class="view">
+
+    <!-- Income + Budget -->
+    <div class="sec">
+      <div class="sgroup-title">income & budget</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <div class="setting-item">
+          <div class="lbl">monthly income</div>
+          <div class="setting-edit">
+            <span>$</span>
+            <input type="number" id="incomeInput" min="0" step="1" value="3000">
+            <span class="setting-saved" id="incomeSaved">saved</span>
+          </div>
+        </div>
+        <div class="setting-item">
+          <div class="lbl">monthly budget</div>
+          <div class="setting-edit">
+            <span>$</span>
+            <input type="number" id="budgetInput" min="0" step="1" value="3000">
+            <span class="setting-saved" id="budgetSaved">saved</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- Expense Categories -->
+    <div class="sec">
+      <div class="sgroup-title">expense categories</div>
+      <div class="cat-list" id="catListEditor"></div>
+      <button class="cat-add-btn" onclick="addCategory()">+ add category</button>
+      <span class="setting-saved" id="catSaved" style="margin-left:8px">saved</span>
+    </div>
+
+    <!-- Background Color -->
+    <div class="sec">
+      <div class="sgroup-title">background color</div>
+      <div class="color-grid" id="colorGrid"></div>
+    </div>
+
+    <!-- Lava Lamp -->
+    <div class="sec">
+      <div class="sgroup-title">lava lamp background</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button id="lavaToggle" class="cat-add-btn" onclick="toggleLava()">on</button>
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">blobs match your health score color</span>
+      </div>
+    </div>
+
+  </div><!-- /view-settings -->
 
 </div>
 
@@ -290,10 +408,10 @@ const firebaseConfig = {
 };
 /* ───────────────────────────────────── */
 
-const CATS=['General','Grocery','Restaurant','Coffee','Transportation','Entertainment'];
-const CAT_NEXT={General:'Grocery',Grocery:'Restaurant',Restaurant:'Coffee',Coffee:'Transportation',Transportation:'Entertainment',Entertainment:'General'};
+let CATS=['General','Grocery','Restaurant','Coffee','Transportation','Entertainment'];
+const BG_COLORS=['#f5f0e8','#f0ece4','#e8e4dc','#f2ede5','#ebe6de','#e5e0d8','#f5f2ed','#edeae5','#e0ddd8','#d8d5d0'];
 
-let income=3000,budget=3000,transactions=[],addType='v',catFilter='all',ch=null,incT=null,incSaveT=null,bdgSaveT=null;
+let income=3000,budget=3000,transactions=[],addType='v',catFilter='all',ch=null,incT=null,incSaveT=null,bdgSaveT=null,showAll=false;
 
 const configured=firebaseConfig.apiKey!=="YOUR_API_KEY";
 
@@ -307,8 +425,12 @@ if(!configured){
   async function init(){
     try{
       const s=await getDoc(doc(db,'settings','config'));
-      if(s.exists()&&s.data().income){income=s.data().income;document.getElementById('incomeInput').value=income;}
-      if(s.exists()&&s.data().budget){budget=s.data().budget;document.getElementById('budgetInput').value=budget;}
+      if(s.exists()&&s.data().income!=null){income=s.data().income;document.getElementById('incomeInput').value=income;}
+      if(s.exists()&&s.data().budget!=null){budget=s.data().budget;document.getElementById('budgetInput').value=budget;}
+      if(s.exists()&&s.data().categories&&s.data().categories.length){CATS=s.data().categories;}
+      if(s.exists()&&s.data().bgColor){selectedBg=s.data().bgColor;document.documentElement.style.setProperty('--bg',selectedBg);}
+      if(s.exists()&&s.data().lavaOn!=null){lavaOn=s.data().lavaOn;applyLavaState();}
+      renderCatChips();renderCatSelect();
     }catch(e){}
 
     // Check if month rollover needed
@@ -317,7 +439,7 @@ if(!configured){
     onSnapshot(collection(db,'transactions'),snap=>{
       transactions=snap.docs.map(d=>({id:d.id,...d.data()}));
       document.getElementById('dot').className='dot on';
-      renderTx();tick();if(ch)updateCh();
+      renderTx();tick();if(!ch)initChart();else updateCh();
     },()=>{document.getElementById('dot').className='dot err';});
 
     loadHistory(db);
@@ -415,7 +537,7 @@ if(!configured){
 
   window.cycleCat=async id=>{
     const t=transactions.find(t=>t.id===id);
-    if(t){const next=CAT_NEXT[t.category||'General'];await updateDoc(doc(db,'transactions',id),{category:next});}
+    if(t){const cur=t.category||'General';const idx=CATS.indexOf(cur);const next=CATS[(idx+1)%CATS.length];await updateDoc(doc(db,'transactions',id),{category:next});}
   };
 
   function flashSaved(id){
@@ -431,6 +553,7 @@ if(!configured){
     clearTimeout(incSaveT);
     incSaveT=setTimeout(async()=>{
       await setDoc(doc(db,'settings','config'),{income},{merge:true});
+      await addDoc(collection(db,'settingsLog'),{field:'income',value:income,changedAt:new Date().toISOString()});
       flashSaved('incomeSaved');
     },800);
   });
@@ -442,6 +565,7 @@ if(!configured){
     clearTimeout(bdgSaveT);
     bdgSaveT=setTimeout(async()=>{
       await setDoc(doc(db,'settings','config'),{budget},{merge:true});
+      await addDoc(collection(db,'settingsLog'),{field:'budget',value:budget,changedAt:new Date().toISOString()});
       flashSaved('budgetSaved');
     },800);
   });
@@ -455,6 +579,269 @@ if(!configured){
   init();
 }
 
+/* ── View switching ── */
+/* ═══════════════════════════════════════════════════════════════
+   DECIDE ROULETTE
+
+   Probability formula:
+     remaining = budget - spentSoFar
+     headroom  = remaining / budget        (1 = nothing spent, 0 = at budget, <0 = over)
+     ratio     = expenseAmount / budget     (how big the purchase is relative to budget)
+     dailyCap  = budget / daysInMonth       (max reasonable daily spend)
+     bonus     = max(0, 1 - amount/dailyCap) * 0.4   (small-purchase leniency)
+     P(yes)    = clamp(headroom - ratio*3 + bonus, 0.05, 0.95)
+
+   Headroom is the baseline — how much budget remains as a fraction.
+   Ratio*3 punishes large purchases hard relative to budget.
+   Bonus gives extra approval weight to small purchases (under daily cap).
+     - At $0 expense, bonus = 0.4 (max leniency)
+     - At dailyCap expense, bonus = 0 (no leniency)
+     - Above dailyCap, bonus stays 0
+   Floor 0.05 / ceiling 0.95 keeps it fun — there's always a small chance either way.
+   ═══════════════════════════════════════════════════════════════ */
+
+function decideProb(amount){
+  const spent=transactions.reduce((s,t)=>s+t.amount,0);
+  const remaining=budget-spent;
+  const headroom=remaining/Math.max(budget,1);
+  const ratio=amount/Math.max(budget,1);
+  // small-purchase bonus: linearly drops from 0.4 to 0 as amount approaches daily budget cap
+  const dim=new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate();
+  const dailyCap=budget/dim;
+  const bonus=Math.max(0,1-amount/dailyCap)*0.4;
+  return Math.max(0.05,Math.min(0.95,headroom-ratio*3+bonus));
+}
+
+let spinning=false;
+function drawWheel(pYes,ballAngle){
+  const canvas=document.getElementById('rouletteCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  const size=320;
+  canvas.width=size*dpr;canvas.height=size*dpr;
+  canvas.style.width=size+'px';canvas.style.height=size+'px';
+  ctx.scale(dpr,dpr);
+
+  const cx=size/2,cy=size/2,r=130,ir=40;
+  const yesArc=pYes*Math.PI*2;
+
+  ctx.clearRect(0,0,size,size);
+
+  // outer ring shadow
+  ctx.save();
+  ctx.beginPath();ctx.arc(cx,cy,r+6,0,Math.PI*2);
+  ctx.fillStyle='rgba(0,0,0,.06)';ctx.fill();
+  ctx.restore();
+
+  // yes zone (green) — starts at top (−π/2)
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+yesArc);
+  ctx.closePath();
+  ctx.fillStyle='#1D9E75';ctx.fill();
+
+  // no zone (red)
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.arc(cx,cy,r,-Math.PI/2+yesArc,-Math.PI/2+Math.PI*2);
+  ctx.closePath();
+  ctx.fillStyle='#D94F4F';ctx.fill();
+
+  // zone labels
+  ctx.save();
+  ctx.font='600 13px "DM Mono",monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='#fff';
+  const yMid=-Math.PI/2+yesArc/2;
+  const nMid=-Math.PI/2+yesArc+(Math.PI*2-yesArc)/2;
+  const lr=r*0.6;
+  if(pYes>0.12)ctx.fillText('YES',cx+lr*Math.cos(yMid),cy+lr*Math.sin(yMid));
+  if(pYes<0.88)ctx.fillText('NO',cx+lr*Math.cos(nMid),cy+lr*Math.sin(nMid));
+  ctx.restore();
+
+  // divider lines
+  ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lineWidth=2;
+  [yesArc,0].forEach(a=>{
+    const ang=-Math.PI/2+a;
+    ctx.beginPath();ctx.moveTo(cx+ir*Math.cos(ang),cy+ir*Math.sin(ang));
+    ctx.lineTo(cx+r*Math.cos(ang),cy+r*Math.sin(ang));ctx.stroke();
+  });
+
+  // inner circle
+  ctx.beginPath();ctx.arc(cx,cy,ir,0,Math.PI*2);
+  ctx.fillStyle='var(--bg,#f5f0e8)';ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.08)';ctx.lineWidth=1.5;ctx.stroke();
+
+  // ball
+  if(ballAngle!=null){
+    const br=r-16;
+    const bx=cx+br*Math.cos(ballAngle);
+    const by=cy+br*Math.sin(ballAngle);
+    ctx.beginPath();ctx.arc(bx,by,8,0,Math.PI*2);
+    ctx.fillStyle='#f0ede8';ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=1;ctx.stroke();
+    // shine
+    ctx.beginPath();ctx.arc(bx-2,by-2,3,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.6)';ctx.fill();
+  }
+}
+
+function updateDecideStats(){
+  const amt=parseFloat(document.getElementById('decideAmt').value)||0;
+  const spent=transactions.reduce((s,t)=>s+t.amount,0);
+  const remaining=budget-spent;
+  const p=amt>0?decideProb(amt):null;
+  const statsEl=document.getElementById('decideStats');
+  if(p===null){
+    statsEl.innerHTML='enter an amount to see your odds';
+    drawWheel(0.5,null);
+  }else{
+    statsEl.innerHTML=`$${Math.round(remaining).toLocaleString()} remaining of $${budget.toLocaleString()} budget<br>chance of yes: ${Math.round(p*100)}%`;
+    drawWheel(p,null);
+  }
+  document.getElementById('decideResult').textContent='';
+}
+
+window.spinRoulette=()=>{
+  const amt=parseFloat(document.getElementById('decideAmt').value);
+  if(!amt||amt<=0||spinning)return;
+
+  spinning=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('decideResult').textContent='';
+
+  const p=decideProb(amt);
+  const yesArc=p*Math.PI*2;
+
+  // pre-determine outcome
+  const isYes=Math.random()<p;
+
+  // pick landing angle within the correct zone (from top, −π/2)
+  let landAngle;
+  if(isYes){
+    landAngle=-Math.PI/2+Math.random()*yesArc;
+  }else{
+    landAngle=-Math.PI/2+yesArc+Math.random()*(Math.PI*2-yesArc);
+  }
+
+  // animate: ball starts at top (−π/2), spins several full rotations, lands at landAngle
+  const totalSpins=4+Math.random()*2;
+  const startAngle=-Math.PI/2;
+  // total rotation = full spins + arc from start to landing (normalized positive)
+  let arcToLand=landAngle-startAngle;
+  while(arcToLand<0)arcToLand+=Math.PI*2;
+  const totalAngle=totalSpins*Math.PI*2+arcToLand;
+  const duration=3500;
+  const startTime=performance.now();
+
+  function animate(now){
+    const elapsed=now-startTime;
+    const t=Math.min(elapsed/duration,1);
+    const ease=1-Math.pow(1-t,3);
+    const currentAngle=startAngle+totalAngle*ease;
+    drawWheel(p,currentAngle);
+
+    if(t<1){
+      requestAnimationFrame(animate);
+    }else{
+      spinning=false;
+      document.getElementById('spinBtn').disabled=false;
+      // check where ball actually landed on the wheel
+      // normalize final angle to 0..2π starting from top (-π/2)
+      let finalAng=currentAngle+Math.PI/2;
+      finalAng=((finalAng%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);
+      const landedYes=finalAng<yesArc;
+      const res=document.getElementById('decideResult');
+      if(landedYes){
+        res.textContent='YES — treat yourself';
+        res.style.color='#1D9E75';
+      }else{
+        res.textContent='NO — maybe not today';
+        res.style.color='#D94F4F';
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+};
+
+// update stats when amount changes
+document.getElementById('decideAmt')?.addEventListener('input',updateDecideStats);
+
+window.switchView=v=>{
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
+  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+v));
+  if(v==='settings'){renderCatEditor();renderColorGrid();}
+  if(v==='decide'){updateDecideStats();}
+};
+
+/* ── Dynamic category chips + select ── */
+function renderCatChips(){
+  const el=document.getElementById('catFilters');
+  el.innerHTML='<div class="cat-chip active" data-cat="all">all</div>'+CATS.map(c=>'<div class="cat-chip" data-cat="'+c+'">'+c.toLowerCase()+'</div>').join('');
+  catFilter='all';
+}
+function renderCatSelect(){
+  const el=document.getElementById('catSel');
+  el.innerHTML=CATS.map((c,i)=>'<option value="'+c+'"'+(i===0?' selected':'')+'>'+c+'</option>').join('');
+}
+
+/* ── Category editor (settings) ── */
+let catSaveT=null;
+function renderCatEditor(){
+  document.getElementById('catListEditor').innerHTML=CATS.map((c,i)=>'<div class="cat-row"><input value="'+c+'" data-idx="'+i+'" onchange="renameCat('+i+',this.value)"'+(c==='General'?' readonly':'')+'>'+(c==='General'?'':'<button class="cat-del" onclick="deleteCat('+i+')">×</button>')+'</div>').join('');
+}
+function saveCats(){
+  clearTimeout(catSaveT);
+  catSaveT=setTimeout(async()=>{
+    await setDoc(doc(db,'settings','config'),{categories:CATS},{merge:true});
+    await addDoc(collection(db,'settingsLog'),{field:'categories',value:CATS.join(','),changedAt:new Date().toISOString()});
+    const el=document.getElementById('catSaved');el.style.opacity='1';setTimeout(()=>{el.style.opacity='0';},1500);
+  },800);
+  renderCatChips();renderCatSelect();
+}
+window.addCategory=()=>{CATS.push('New');renderCatEditor();saveCats();};
+window.renameCat=(i,v)=>{v=v.trim();if(!v)return;CATS[i]=v;saveCats();};
+window.deleteCat=async i=>{
+  if(CATS[i]==='General')return;
+  if(CATS.length<=1)return;
+  const name=CATS[i];
+  if(!confirm('Delete category "'+name+'"? Transactions using it will be moved to General.'))return;
+  CATS.splice(i,1);
+  const affected=transactions.filter(t=>(t.category||'General')===name);
+  for(const t of affected){await updateDoc(doc(db,'transactions',t.id),{category:'General'});}
+  renderCatEditor();saveCats();
+};
+
+/* ── Lava lamp ── */
+let lavaOn=true;
+function updateLavaColor(col){
+  if(!lavaOn)return;
+  document.querySelectorAll('.lava-blob').forEach(b=>{b.style.background=col;});
+}
+function applyLavaState(){
+  const el=document.getElementById('lava-bg');
+  el.classList.toggle('on',lavaOn);
+  document.getElementById('lavaToggle').textContent=lavaOn?'on':'off';
+}
+window.toggleLava=()=>{
+  lavaOn=!lavaOn;
+  applyLavaState();
+  setDoc(doc(db,'settings','config'),{lavaOn},{merge:true});
+};
+
+/* ── Color picker (settings) ── */
+let selectedBg=document.documentElement.style.getPropertyValue('--bg')||BG_COLORS[0];
+function renderColorGrid(){
+  document.getElementById('colorGrid').innerHTML=BG_COLORS.map(c=>'<div class="color-swatch'+(c===selectedBg?' active':'')+'" style="background:'+c+'" onclick="pickColor(\''+c+'\')"></div>').join('');
+}
+window.pickColor=c=>{
+  selectedBg=c;
+  document.documentElement.style.setProperty('--bg',c);
+  renderColorGrid();
+  setDoc(doc(db,'settings','config'),{bgColor:c},{merge:true});
+  addDoc(collection(db,'settingsLog'),{field:'bgColor',value:c,changedAt:new Date().toISOString()});
+};
+
 /* ── Category filter chips ── */
 document.getElementById('catFilters').addEventListener('click',e=>{
   const chip=e.target.closest('.cat-chip');
@@ -466,6 +853,7 @@ document.getElementById('catFilters').addEventListener('click',e=>{
 });
 
 /* ── Toggle add type ── */
+window.toggleShowAll=()=>{showAll=!showAll;renderTx();};
 window.toggleAddType=()=>{
   addType=addType==='f'?'v':'f';
   const b=document.getElementById('tg');
@@ -481,8 +869,9 @@ function renderTx(){
   const sorted=[...filtered].sort((a,b)=>b.date.localeCompare(a.date));
   const total=transactions.reduce((s,t)=>s+t.amount,0);
   document.getElementById('tt').textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(!sorted.length){document.getElementById('txList').innerHTML='<div class="empty">'+(catFilter==='all'?'No expenses yet.':'No '+catFilter+' expenses.')+'</div>';return;}
-  document.getElementById('txList').innerHTML=sorted.map(t=>{
+  if(!sorted.length){document.getElementById('txList').innerHTML='<div class="empty">'+(catFilter==='all'?'No expenses yet.':'No '+catFilter+' expenses.')+'</div>';document.getElementById('showAllWrap').style.display='none';return;}
+  const visible=showAll?sorted:sorted.slice(0,5);
+  document.getElementById('txList').innerHTML=visible.map(t=>{
     const f=t.type==='f';
     const cat=t.category||'General';
     return`<div class="txi">
@@ -494,6 +883,8 @@ function renderTx(){
       <button class="ed" onclick="delTx('${t.id}')">×</button>
     </div>`;
   }).join('');
+  const wrap=document.getElementById('showAllWrap');
+  if(sorted.length>5){wrap.style.display='';document.getElementById('showAllBtn').textContent=showAll?'show less ▴':'show all ('+sorted.length+') ▾';}else{wrap.style.display='none';}
 }
 
 /* ── Budget math ── */
@@ -541,6 +932,7 @@ function mFrac(){
 /* ── Tick ── */
 function tick(){
   const frac=mFrac(),{fix,vari,rate,pm,dim,today}=proj(),sc=score(pm),col=lerpStr(sc);
+  updateLavaColor(col);
   const earned=frac*income;
   const ew=Math.floor(earned),ef=Math.floor((earned-ew)*100).toString().padStart(2,'0');
   document.getElementById('ew').textContent=ew.toLocaleString();
@@ -621,7 +1013,7 @@ document.addEventListener('keydown',e=>{
 });
 
 document.getElementById('txDate').value=new Date().toISOString().split('T')[0];
-initChart();tick();setInterval(tick,250);
+tick();setInterval(tick,250);
 </script>
 </body>
 </html>
